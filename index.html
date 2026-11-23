@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astralwebs — 3-Point Spatial Transition UI</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Edu+SA+Hand:wght@400..700&family=Finger+Paint&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=PT+Serif+Caption:ital@0;1&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playpen+Sans:wght@100..800&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&family=Redaction:ital,wght@0,400;0,700;1,400&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&family=Short+Stack&display=swap" rel="stylesheet">
+
+  <!-- GSAP Core & Flip Plugin CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    if (window.gsap && window.Flip) {
+      gsap.registerPlugin(Flip);
+    }
+  </script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Persistent Full-Screen Radial Background Glow -->
+  <div id="bg-glow"></div>
+
+  <!-- Full-Screen Welcome Overlay -->
+  <div id="welcome-screen" class="welcome-container" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <!-- Welcome Screen Header -->
+    <div class="welcome-header">
+      <div class="brand-container">
+        <img src="logos/astral_webs_transparent.webp" class="brand-logo" alt="Astralwebs Logo">
+        <span>ASTRALWEBS</span>
+      </div>
+    </div>
+
+    <!-- Floating Background Elements (Cinematic Space Ambient) -->
+    <div class="particle-ambient"></div>
+
+    <div class="welcome-inner">
+      <!-- Central Logo Wrapper -->
+      <div class="welcome-logo-wrap welcome-element">
+        <img src="logos/astral_webs_transparent.webp" class="welcome-logo-img" alt="Astralwebs 3D Logo">
+      </div>
+
+      <!-- Text Block Container -->
+      <div class="welcome-text-block">
+        <div class="welcome-headings welcome-element">
+          <p class="welcome-subheader">ASTRALWEBS EXPERIENCE</p>
+          <h1 class="welcome-title" id="welcome-title">WELCOME</h1>
+        </div>
+        <p class="welcome-instructions welcome-element">
+          Navigate through the interactive strategy audit using your keyboard shortcuts or the on-screen preview thumbnails.
+        </p>
+      </div>
+
+      <!-- Shortcut Grid -->
+      <div class="key-shortcuts-row welcome-element" role="region" aria-label="Keyboard Shortcuts">
+        <div class="shortcut-pill" aria-label="Browse Options with Arrow Keys">
+          <kbd class="key-kbd">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </kbd>
+          <kbd class="key-kbd">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </kbd>
+          <span>Browse Options</span>
+        </div>
+        <div class="shortcut-pill" aria-label="Select and Advance with Enter">
+          <kbd class="key-kbd">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"></polyline><path d="M20 4v7a4 4 0 0 1-4 4H4"></path></svg>
+            ENTER
+          </kbd>
+          <span>Select / Advance</span>
+        </div>
+        <div class="shortcut-pill" aria-label="Previous Step with Backspace">
+          <kbd class="key-kbd">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg>
+            BACKSPACE
+          </kbd>
+          <span>Previous Step</span>
+        </div>
+      </div>
+
+      <!-- Primary CTA Button -->
+      <button type="button" class="welcome-start-btn welcome-element btn-primary" id="welcome-start-btn" autofocus aria-label="Press Enter to begin">PRESS ENTER TO BEGIN</button>
+    </div>
+  </div>
+
+  <!-- App Wrapper (Cardless, Full Viewport, Unified Transparent Wrapper) -->
+  <div id="app-wrapper" tabindex="0">
+
+    <!-- Header -->
+    <header>
+      <div class="brand-container logo">
+        <img src="logos/astral_webs_transparent.webp" class="brand-logo" alt="Astralwebs Logo">
+        <span>ASTRALWEBS</span>
+      </div>
+
+      <!-- Center Pill-shaped Nav Menu -->
+      <nav class="nav-pill" aria-label="Step navigation">
+        <button class="nav-pill-item active" data-step="1">INDUSTRY</button>
+        <button class="nav-pill-item" data-step="2">SIZE</button>
+        <button class="nav-pill-item" data-step="3">REVENUE</button>
+        <button class="nav-pill-item" data-step="4">BOTTLENECKS</button>
+        <button class="nav-pill-item" data-step="5">CONTACT</button>
+      </nav>
+
+      <!-- Right: Menu control -->
+      <div class="header-controls">
+        <button class="header-icon-btn" id="menu-btn" aria-label="Menu options">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Grid (Left Step Info, Center Stage, Top-Left Thumbnail, Bottom-Right Thumbnail) -->
+    <main id="content-grid">
+
+      <!-- 1. Left Col (.step-info) -->
+      <section class="left-col step-info" id="step-col" aria-label="Current Step Info">
+        <div class="nav-arrows-row nav-arrows-container step-controls" id="nav-arrows-row">
+          <button type="button" onclick="navigatePrev()" class="nav-arrow-btn nav-btn nav-btn-prev carousel-prev carousel-arrow step-prev-btn" id="nav-arrow-prev" data-action="prev" aria-label="Previous Option">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button type="button" onclick="navigateNext()" class="nav-arrow-btn nav-btn nav-btn-next carousel-next carousel-arrow step-next-btn" id="nav-arrow-next" data-action="next" aria-label="Next Option">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="step-num step-number step-heading" id="step-num">STEP 01</div>
+        <div class="step-name step-title" id="step-name">SELECT INDUSTRY</div>
+        <p class="step-description hero-description" id="step-description">Choose your primary industry so we can match you with the exact conversion pipelines and case studies proven in your specific market.</p>
+      </section>
+
+      <!-- 2. Center Stage (.active-stage) -->
+      <section class="center-stage" id="stage-col">
+        <div class="active-stage" id="center-img-wrap">
+          <div class="img-slot" id="center-img-slot">
+            <img 
+              src="./assets/step1-1.webp" 
+              alt="Roofing & Solar" 
+              class="stage-img" 
+              id="center-img" 
+              data-flip-id="img-1-0"
+              decoding="async"
+            />
+          </div>
+          <h2 class="stage-title hero-title" id="stage-title">Roofing & Solar</h2>
+        </div>
+
+        <div class="center-text-group content-center-group hero-text-container" id="center-text-group">
+          <p class="main-subtitle hero-description" id="main-subtitle">High-ticket residential solar & structural roofing infrastructure pipeline.</p>
+          <!-- Step 5 Contact Details Form Wrapper (Strict W3C Autofill Compliant) -->
+          <form id="contact-autofill-form" onsubmit="return false;" style="display: none;">
+            <!-- NAME FIELD -->
+            <div class="input-group">
+              <label for="user-name" class="sr-only">Full Name</label>
+              <input type="text" id="user-name" name="name" autocomplete="name" placeholder="YOUR NAME?" class="contact-input step5-input">
+            </div>
+
+            <!-- EMAIL FIELD -->
+            <div class="input-group">
+              <label for="user-email" class="sr-only">Email Address</label>
+              <input type="email" id="user-email" name="email" autocomplete="email" placeholder="YOUR EMAIL?" class="contact-input step5-input">
+            </div>
+
+            <!-- PHONE FIELD (If applicable) -->
+            <div class="input-group">
+              <label for="user-phone" class="sr-only">Phone Number</label>
+              <input type="tel" id="user-phone" name="tel" autocomplete="tel" placeholder="YOUR PHONE?" class="contact-input step5-input">
+            </div>
+
+            <!-- COMPANY FIELD -->
+            <div class="input-group">
+              <label for="user-organization" class="sr-only">Company Name</label>
+              <input type="text" id="user-organization" name="organization" autocomplete="organization" placeholder="YOUR COMPANY?" class="contact-input step5-input">
+            </div>
+
+            <!-- WEBSITE FIELD -->
+            <div class="input-group">
+              <label for="user-website" class="sr-only">Website URL</label>
+              <input type="url" id="user-website" name="url" autocomplete="url" placeholder="YOUR WEBSITE?" class="contact-input step5-input">
+            </div>
+
+            <!-- NOTES FIELD -->
+            <div class="input-group">
+              <label for="user-notes" class="sr-only">Additional Notes</label>
+              <textarea id="user-notes" name="additionalNotes" autocomplete="off" placeholder="Tell us about specific goals, timelines, or requirements..." class="custom-textarea step5-textarea"></textarea>
+              <div class="textarea-hint">Press Enter to continue, Shift+Enter for new line</div>
+            </div>
+
+            <!-- SUBMIT BUTTON OPTION -->
+            <div class="input-group">
+              <button type="button" class="launch-analysis-btn" id="launch-analysis-btn">LAUNCH ANALYSIS</button>
+            </div>
+
+            <!-- Dedicated Error Message Container -->
+            <div id="input-error-message" class="input-error-message"></div>
+
+            <!-- FAKE SUBMIT BUTTON (CRITICAL FOR OS DETECTION) -->
+            <button type="submit" tabindex="-1" style="display:none" aria-hidden="true">Submit</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Right Column: Selections Receipt (Running list of user selections with thumbnails) -->
+      <div class="right-col right-col-spacer" id="right-col-spacer">
+        <div class="selections-receipt">
+          <div class="receipt-title">YOUR SELECTIONS</div>
+          <ul id="receipt-list">
+            <!-- Dynamically injected <li> items go here -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. Top-Left Thumbnail (.prev-thumbnail) -->
+      <div class="prev-slot-wrap" id="prev-slot-wrap">
+        <button class="slot-btn" id="prev-btn" aria-label="Previous Option">
+          <div class="prev-thumbnail" id="prev-thumbnail">
+            <div class="img-slot" id="prev-img-slot">
+              <img src="./assets/step1-7.webp" alt="Home Automation & Custom AV" class="stage-img" id="prev-img" data-flip-id="img-1-6" decoding="async" />
+            </div>
+            <div class="thumbnail-label prev-label" id="prev-label">Home Automation & Custom AV</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- 4. Bottom-Right Thumbnail (.next-thumbnail) -->
+      <div class="next-slot-wrap" id="next-slot-wrap">
+        <button class="slot-btn" id="next-btn" aria-label="Next Option">
+          <div class="next-thumbnail" id="next-thumbnail">
+            <div class="img-slot" id="next-img-slot">
+              <img src="./assets/step1-2.webp" alt="Home Remodeling & Design-Build" class="stage-img" id="next-img" data-flip-id="img-1-1" decoding="async" />
+            </div>
+            <div class="thumbnail-label next-label" id="next-label">Home Remodeling & Design-Build</div>
+          </div>
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Full-Screen Review & Submit Screen -->
+    <div id="final-review-screen" style="display: none; opacity: 0;">
+      <div class="review-titles">
+        <h2 class="review-heading">FINAL REVIEW</h2>
+        <p class="review-subheading">Please confirm your selections before initiating the scale-plan.</p>
+      </div>
+      
+      <div id="full-review-list" class="data-grid">
+        <!-- 1. Industry -->
+        <div class="data-pill" data-position="1" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Building%20construction/3D/building_construction_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Industry</span>
+            <span class="pill-value data-pill-text" title="Roofing &amp; Solar">Roofing &amp; Solar</span>
+          </div>
+        </div>
+
+        <!-- 2. Company Size -->
+        <div class="data-pill" data-position="2" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Busts%20in%20silhouette/3D/busts_in_silhouette_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Company Size</span>
+            <span class="pill-value data-pill-text" title="1-5 EMPLOYEES">1-5 EMPLOYEES</span>
+          </div>
+        </div>
+
+        <!-- 3. Monthly Revenue -->
+        <div class="data-pill" data-position="3" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Money%20bag/3D/money_bag_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Monthly Revenue</span>
+            <span class="pill-value data-pill-text" title="Under $50k/mo">Under $50k/mo</span>
+          </div>
+        </div>
+
+        <!-- 4. Primary Bottleneck -->
+        <div class="data-pill" data-position="4" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Hourglass%20done/3D/hourglass_done_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Primary Bottleneck</span>
+            <span class="pill-value data-pill-text" title="No automated follow-ups">No automated follow-ups</span>
+          </div>
+        </div>
+
+        <!-- 5. Full Name -->
+        <div class="data-pill" data-position="5" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Identification%20card/3D/identification_card_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Full Name</span>
+            <span class="pill-value data-pill-text" title="Dinesh Kumar">Dinesh Kumar</span>
+          </div>
+        </div>
+
+        <!-- 6. Work Email -->
+        <div class="data-pill" data-position="6" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Envelope/3D/envelope_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Work Email</span>
+            <span class="pill-value data-pill-text" title="mail.to.dinesh.21@gmail.com">mail.to.dinesh.21@gmail.com</span>
+          </div>
+        </div>
+
+        <!-- 7. Company Name -->
+        <div class="data-pill" data-position="7" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Office%20building/3D/office_building_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Company Name</span>
+            <span class="pill-value data-pill-text" title="Magikscill">Magikscill</span>
+          </div>
+        </div>
+
+        <!-- 8. Phone Number -->
+        <div class="data-pill" data-position="8" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Mobile%20phone/3D/mobile_phone_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Phone Number</span>
+            <span class="pill-value data-pill-text" title="(884) 063-9812">(884) 063-9812</span>
+          </div>
+        </div>
+
+        <!-- 9. Website URL -->
+        <div class="data-pill" data-position="9" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Globe%20with%20meridians/3D/globe_with_meridians_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Website URL</span>
+            <span class="pill-value data-pill-text" title="magiskcill.com">magiskcill.com</span>
+          </div>
+        </div>
+
+        <!-- 10. Additional Notes -->
+        <div class="data-pill" data-position="10" tabindex="0">
+          <div class="pill-icon" aria-hidden="true">
+            <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Clipboard/3D/clipboard_3d.png" alt="" class="realistic-icon" loading="lazy" decoding="async">
+          </div>
+          <div class="pill-body">
+            <span class="pill-label data-pill-text">Additional Notes</span>
+            <span class="pill-value data-pill-text" title="nothing to tell yo boss !">nothing to tell yo boss !</span>
+          </div>
+        </div>
+      </div>
+      
+      <button id="final-submit-btn" class="btn-primary submit-btn" aria-live="polite" aria-label="Confirm and submit selections">
+        <span class="btn-text">CONFIRM &amp; SUBMIT</span>
+      </button>
+
+      <!-- High-Care Personalized Post-Submission Confirmation Screen -->
+      <div id="confirmation-card" class="confirmation-card" style="display: none; opacity: 0;" aria-live="polite">
+        <!-- 1. Top Status Badge -->
+        <div class="confirm-badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span class="badge-text">DATA RECEIVED</span>
+        </div>
+
+        <!-- 2. Warm, Personal Headline -->
+        <h2 class="confirm-headline">We’ve got you, <span id="confirm-user-firstname">Partner</span>.</h2>
+
+        <!-- 3. Empathetic Sub-Copy (Tailored to Selections) -->
+        <p class="confirm-subcopy">
+          Building a <span id="confirm-user-industry" class="confirm-highlight">high-growth</span> operation at <span id="confirm-user-company" class="confirm-highlight">your company</span> takes relentless focus—and dealing with <span id="confirm-user-bottleneck" class="confirm-highlight">operational bottlenecks</span> shouldn't slow you down. Our engineering team is already reviewing your setup and sending a custom architecture roadmap to <span id="confirm-user-email" class="confirm-highlight">your inbox</span>.
+        </p>
+
+        <!-- 4. Live 3-Step Care Tracker -->
+        <div class="care-tracker">
+          <!-- Step 1 -->
+          <div class="tracker-item" data-step="1">
+            <div class="tracker-marker completed">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="tracker-content">
+              <h4 class="tracker-title">Profile &amp; Bottlenecks Logged</h4>
+              <p class="tracker-desc">Your <span id="tracker-industry">operation</span> parameters are locked in for review.</p>
+            </div>
+          </div>
+
+          <div class="tracker-connector"></div>
+
+          <!-- Step 2 -->
+          <div class="tracker-item" data-step="2">
+            <div class="tracker-marker completed">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="tracker-content">
+              <h4 class="tracker-title">Custom Scale Blueprint Dispatched</h4>
+              <p class="tracker-desc">Tailored workflow recommendations sent to <span id="tracker-email">your inbox</span>.</p>
+            </div>
+          </div>
+
+          <div class="tracker-connector active"></div>
+
+          <!-- Step 3 -->
+          <div class="tracker-item active" data-step="3">
+            <div class="tracker-marker pulse">
+              <div class="pulse-core"></div>
+              <div class="pulse-ring"></div>
+            </div>
+            <div class="tracker-content">
+              <h4 class="tracker-title">Founder Priority Review</h4>
+              <p class="tracker-desc">A dedicated automation architect will reach out personally within 2 business hours.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Reassurance Footer & Demo Reset -->
+        <p class="confirm-reassurance">
+          No generic pitch decks. No spam. Just practical engineering built around the tools your team already loves.
+        </p>
+
+        <button id="reset-inquiry-btn" class="reset-inquiry-btn" type="button" aria-label="Submit another inquiry">
+          &larr; Submit another inquiry
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>
